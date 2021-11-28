@@ -1,0 +1,69 @@
+﻿<Window x:Class="ProjectManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjectManager" 
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"  
+        Title="MainWindow" Height="440" Width="600">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="220"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="190"/>
+      <ColumnDefinition Width="95"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <GroupBox Header="Departments" Grid.Row="0" Grid.Column="0" Margin="5">
+      <StackPanel Name="panDepartments"/>
+    </GroupBox>
+
+    <GroupBox Header="Projects" Grid.Row="0" Grid.Column="1" Margin="5">
+      <StackPanel Name="panProjects"/>
+    </GroupBox>
+
+    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="100"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Label Content="Vorname:"   Grid.Row="0" Grid.Column="0"/>
+      <TextBox Name="txtFirstname" Grid.Row="0" Grid.Column="1" Text="Hansi"/>
+      <Label Content="Nachname:"  Grid.Row="1" Grid.Column="0"/>
+      <TextBox Name="txtLastname" Grid.Row="1" Grid.Column="1" Text="Huber"/>
+      <Label Content="Alter:"     Grid.Row="2" Grid.Column="0"/>
+      <TextBox Name="txtAge" Grid.Row="2" Grid.Column="1" Text="66"/>
+      <Label Content="Gehalt:"    Grid.Row="3" Grid.Column="0"/>
+      <TextBox Name="txtSalary" Grid.Row="3" Grid.Column="1" Text="1234.56" />
+      <Label Content="Abteilung:" Grid.Row="4" Grid.Column="0"/>
+      <TextBox Name="txtDepartment" TextChanged="TxtDepartment_OnTextChanged" Grid.Row="4" Grid.Column="1" Text="Sales" />
+      <Label Content="Projekte:"  Grid.Row="5" Grid.Column="0"/>
+      <TextBox Name="txtProjects" TextChanged="TxtProjects_OnTextChanged" Grid.Row="5" Grid.Column="1" Text="ProjectA" />
+      <Button Name="btnAdd" Content="Add" Grid.Row="6" Grid.Column="1" Width="75" Click="BtnAdd_OnClick"/>
+    </Grid>
+
+    <ListBox Name="lstEmployees" Grid.Row="0" Grid.Column="2" Margin="5">
+    </ListBox>
+    <DataGrid Name="grdEmployees" Grid.Row="1" Grid.Column="2" Margin="5" AutoGenerateColumns="False">
+      <DataGrid.Columns>
+        <DataGridTextColumn Binding="{Binding Employee.Name}" Header="Name" ></DataGridTextColumn>
+        <DataGridTextColumn Binding="{Binding Employee.Department}" Header="Department"></DataGridTextColumn>
+        <DataGridTextColumn Binding="{Binding Project.Name}" Header="Project"></DataGridTextColumn>
+        <DataGridTextColumn Binding="{Binding AssingDate}" Header="DateString"></DataGridTextColumn>
+      </DataGrid.Columns>
+    </DataGrid>
+  </Grid>
+</Window>
