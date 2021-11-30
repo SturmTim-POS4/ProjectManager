@@ -23,10 +23,10 @@ namespace ProjectManager
       var cultureInfo = new System.Globalization.CultureInfo("en-US");
       cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
       System.Threading.Thread.CurrentThread.CurrentUICulture = cultureInfo;
-      /*
-      Just First Time
-      ReadCsvFiles();
-      */
+      
+      //Just First Time
+      //ReadCsvFiles();
+      
 
       GenerateButtons();
     }
@@ -50,7 +50,7 @@ namespace ProjectManager
       }
 
       db.SaveChanges();
-
+      
       List<string> projectEmployees = File.ReadAllLines(@"csv/project_employees.csv").Skip(1).ToList();
       foreach (var projectEmployee in projectEmployees)
       {
@@ -60,11 +60,13 @@ namespace ProjectManager
         {
           AssingDate = DateTime.Now,
           EmployeeId = db.Employees
-            .Where(x => x.Lastname + " " + x.Firstname == splitedProjectEmployee[0])
+            .ToList()
+            .Where(x => x.Name == splitedProjectEmployee[0])
             .Select(x => x.Id)
             .ToList()[0],
           Employee = db.Employees
-            .Where(x => x.Lastname + " " + x.Firstname == splitedProjectEmployee[0])
+            .ToList()
+            .Where(x => x.Name == splitedProjectEmployee[0])
             .ToList()[0],
           Project = db.Projects.Where(x => x.Name == splitedProjectEmployee[1]).ToList()[0],
           ProjectId = db.Projects.Where(x => x.Name == splitedProjectEmployee[1]).Select(x => x.Id).ToList()[0]
@@ -130,9 +132,9 @@ namespace ProjectManager
         .Include(x => x.Project)
         .Where(x => x.Employee.Department == department)
         .Where(x => projects.Contains(x.Project.Name))
-        .Distinct()
         .ToList()
-        .Select(x => x.Employee);
+        .Select(x => x.Employee)
+        .Distinct();
 
       grdEmployees.ItemsSource = db.ProjectEmployees
         .Include(x => x.Employee)
@@ -162,7 +164,7 @@ namespace ProjectManager
 
       int id = db.Employees.Select(x => x.Id).Max();
 
-      string[] projectsSplitted = txtProjects.Text.Split(", ");
+      string[] projectsSplitted = txtProjects.Text.Split(",");
 
       foreach (var project in projectsSplitted)
       {
@@ -204,15 +206,20 @@ namespace ProjectManager
     {
       if (db != null)
       {
-        if (db.Projects.Select(x => x.Name).Distinct().ToList().Contains(txtProjects.Text))
+        var splittedProjects = txtProjects.Text.Split(",");
+        foreach (var project in splittedProjects)
         {
-          txtProjects.Background = Brushes.White;
-          btnAdd.IsEnabled = true;
-        }
-        else
-        {
-          txtProjects.Background = Brushes.Red;
-          btnAdd.IsEnabled = false;
+          if (db.Projects.Select(x => x.Name).Distinct().ToList().Contains(project))
+          {
+            txtProjects.Background = Brushes.White;
+            btnAdd.IsEnabled = true;
+          }
+          else
+          {
+            txtProjects.Background = Brushes.Red;
+            btnAdd.IsEnabled = false;
+            break;
+          }
         }
       }
     }

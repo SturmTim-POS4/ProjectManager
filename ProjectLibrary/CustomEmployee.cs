@@ -16,8 +16,8 @@ namespace ProjectLibrary
             splitedEmployee[4] = splitedEmployee[4].Replace('.', ',');
             return new Employee()
             {
-                Firstname = splitedEmployee[1],
-                Lastname = splitedEmployee[2],
+                Lastname = splitedEmployee[1],
+                Firstname = splitedEmployee[2],
                 Age = Int32.Parse(splitedEmployee[3]),
                 Salary = Double.Parse(splitedEmployee[4]),
                 Department = splitedEmployee[5]
